@@ -74,7 +74,7 @@ const updateMapString = ({ done, value}, map_string, fileName) => {
     return map_string;
 };
 
-async function processFilesInCircle(directoryPath, start, end, addFileIndex) {
+const processFilesInCircle = async (directoryPath, start, end, addFileIndex) => {
     const outputFileName = `${directoryPath}/sortMiniData_${addFileIndex}.txt`;
     await fsp.writeFile(outputFileName, '');
     // Файл для записи строк
@@ -112,8 +112,7 @@ async function processFilesInCircle(directoryPath, start, end, addFileIndex) {
     file.end();
 }
 
-
-async function main(inputFilename, outputFileSizeMB, fileCount) {
+const main = async (inputFilename, outputFileSizeMB, fileCount) => {
     let [dirSortFiles, lastIndex] = await createMiniSortFiles(inputFilename, outputFileSizeMB).catch(error => console.error('Error createMiniSortFiles:', error));
     let i = 0;
 
@@ -123,13 +122,14 @@ async function main(inputFilename, outputFileSizeMB, fileCount) {
             step = lastIndex - i;
         }
 
-        console.log('processFilesInCircle', lastIndex)
+        console.log('processFilesInCircle', lastIndex);
 
         await processFilesInCircle(dirSortFiles, i, i + step, lastIndex);
         i += step;
     }
 
-    console.log(dirSortFiles)
+    console.log(dirSortFiles);
 }
+
 main('random_data.txt', 300, 100)
     .catch(error => console.error('Error processing file:', error));
